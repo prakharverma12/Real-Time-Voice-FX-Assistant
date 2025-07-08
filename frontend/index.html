@@ -65,6 +65,7 @@
 <body>
   <div class="container">
     <h1>🎙️ Voice FX Assistant</h1>
+
     <button id="talkBtn">Start Talking</button>
     <button id="stopBtn">Stop</button>
 
@@ -72,17 +73,12 @@
     <input type="file" id="uploadBtn" class="file-upload" />
     <!-- Styled label that triggers upload -->
     <label for="uploadBtn" class="upload-label">Upload</label>
+    <div id="log"></div>
   </div>
 
-  <script>
-    // Example: handle file upload
-    document.getElementById('uploadBtn').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        alert(`Selected file: ${file.name}`);
-        // upload logic goes here
-      }
-    });
-  </script>
+  
+
+
 </body>
+<script type = "module" src="main.js"></script>
 </html>

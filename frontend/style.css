@@ -7,9 +7,21 @@ button {
   padding: 0.5rem 1rem;
 }
 #log {
-  margin-top: 1rem;
+  max-height: 150px;     /* 🔐 limit how tall it can get */
+  overflow-y: auto;      /* ✅ adds scrollbar when needed */
+  padding: 10px;
   background: #f0f0f0;
-  padding: 1rem;
-  max-height: 300px;
-  overflow-y: auto;
+  border-radius: 8px;
+  font-family: monospace;
+  width: 100%; 
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }

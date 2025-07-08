@@ -9,7 +9,23 @@ let listening = false;
 document.getElementById('talkBtn').onclick = async () => {
   if (listening) return;
   listening = true;
+  const fileInput = document.getElementById('uploadBtn'); 
 
+  // ✅ Check if a file is selected
+  if (!fileInput.files || fileInput.files.length === 0) {
+    log("⚠️ No file selected. Please upload an audio file.");
+    listening = false;
+    return;
+  }
+
+  const file = fileInput.files[0];
+
+  // ✅ Check if file is non-empty
+  if (file.size === 0) {
+    log("⚠️ Uploaded file is empty.");
+    listening = false;
+    return;
+  }
   log("🎤 Listening...");
 
   await startMic();
