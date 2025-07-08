@@ -1,5 +1,5 @@
 import { startMic, stopMic, getAudioBlob } from './mic-capture.js';
-import { applyEffects } from './audio-engine.js';
+import { applyEffects } from './audio-engine.mjs';
 import { getIntent } from './intent-handler.js';
 import { speak } from './tts.js';
 import { log } from './ui.js';
@@ -26,12 +26,17 @@ document.getElementById('talkBtn').onclick = async () => {
     listening = false;
     return;
   }
+  
+  log("🎧 Playing original uploaded audio...");
+  await playBlob(file);
+
   log("🎤 Listening...");
 
   await startMic();
-  speak(`PLEASE SPEAK NOW`);
+  speak(`WHAT EFFECT WOULD YOU LIKE TO APPLY?`);
+
   while (listening) {
-    const blob = await getAudioBlob(3000); // record 2-3 sec chunk
+    const blob = await getAudioBlob(7000); // record 2-3 sec chunk
     log(`📦 Blob size: ${blob.size} bytes`);
     const transcript = await fetchTranscript(blob);
     if (!transcript) 
@@ -45,9 +50,11 @@ document.getElementById('talkBtn').onclick = async () => {
 
     const effects = await getIntent(transcript);
     log(`🎛️ Applying: ${effects.join(', ')}`);
-    applyEffects(effects);
+    let transformedBlob = await applyEffects(file, effects);
 
     await speak(`Effect applied: ${effects.join(', ')}. What would you like to do next?`);
+    log("🔊 Playing transformed audio...");
+    await playBlob(transformedBlob);
   }
 };
 
@@ -67,4 +74,18 @@ async function fetchTranscript(blob) {
   });
   const data = await res.json();
   return data.text;
+}
+async function playBlob(blob) {
+  const arrayBuffer = await new Response(blob).arrayBuffer(); 
+  const audioCtx = new (window.AudioContext || winQAdow.webkitAudioContext)();
+  const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(audioCtx.destination);
+  source.start();
+
+  return new Promise(resolve => {
+    source.onended = resolve;
+  });
 }
