@@ -31,7 +31,7 @@ A web-based real-time **duplex voice assistant** that responds to natural speech
 ### 🔧 Backend
 
 - **Express.js**
-- **Vosk.js** (speech-to-text via offline model)
+- **Assembly.ai** (speech-to-text via api)
 - **Intent parser** to map transcript → audio effects
 - File upload endpoint for processing external audio
 
